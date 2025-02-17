@@ -2,10 +2,11 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/site.db'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
@@ -14,7 +15,6 @@ login_manager.login_view = 'login'
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
 
 @login_manager.user_loader
@@ -30,10 +30,9 @@ def home():
 def register():
     if request.method == 'POST':
         username = request.form.get('username')
-        email = request.form.get('email')
         password = request.form.get('password')
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        user = User(username=username, email=email, password=hashed_password)
+        user = User(username=username, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created!', 'success')
@@ -59,4 +58,6 @@ def logout():
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
+    # Ensure the instance folder exists
+    os.makedirs(os.path.join(app.instance_path, 'instance'), exist_ok=True)
     app.run(debug=True)
