@@ -1,6 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import os
 
@@ -8,7 +7,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/site.db'
 db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
@@ -31,8 +29,7 @@ def register():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        user = User(username=username, password=hashed_password)
+        user = User(username=username, password=password)  # เก็บรหัสผ่านโดยไม่แฮช
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created!', 'success')
@@ -45,9 +42,9 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         user = User.query.filter_by(username=username).first()
-        if user and bcrypt.check_password_hash(user.password, password):
+        if user and user.password == password:  # เปรียบเทียบรหัสผ่านโดยตรง
             login_user(user)
-            return redirect(url_for('home'))
+            return redirect(url_for('home'))  # Redirect to home after login
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html')
