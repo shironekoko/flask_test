@@ -77,6 +77,11 @@ def create_recipe():
     
     return render_template('create_recipe.html')
 
+@app.route('/my_recipes')
+@login_required
+def my_recipes():
+    recipes = Recipe.query.filter_by(user_id=current_user.id).all()
+    return render_template('my_recipes.html', recipes=recipes)
 
 @app.route('/logout')
 def logout():
