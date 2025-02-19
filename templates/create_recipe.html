@@ -20,3 +20,13 @@
     
     <button type="submit">Create Recipe</button>
 </form>
+
+{% for recipe in recipes %}
+    <div class="recipe">
+        <h2>{{ recipe.title }}</h2>
+        <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+        <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
+        <p><strong>Time:</strong> {{ recipe.time }} minutes</p>
+        <p><strong>Difficulty:</strong> {{ recipe.difficulty }}</p>
+    </div>
+{% endfor %}
