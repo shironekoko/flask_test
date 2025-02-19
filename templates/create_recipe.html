@@ -1,0 +1,22 @@
+<form method="POST">
+    <label for="title">Recipe Title</label>
+    <input type="text" name="title" required>
+    
+    <label for="ingredients">Ingredients</label>
+    <textarea name="ingredients" required></textarea>
+    
+    <label for="instructions">Instructions</label>
+    <textarea name="instructions" required></textarea>
+    
+    <label for="time">Time (minutes)</label>
+    <input type="number" name="time" required>
+    
+    <label for="difficulty">Difficulty</label>
+    <select name="difficulty" required>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+    </select>
+    
+    <button type="submit">Create Recipe</button>
+</form>
