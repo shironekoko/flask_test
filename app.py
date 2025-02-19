@@ -58,6 +58,25 @@ def login():
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html')
+@app.route('/create_recipe', methods=['GET', 'POST'])
+@login_required
+def create_recipe():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        ingredients = request.form.get('ingredients')
+        instructions = request.form.get('instructions')
+        time = request.form.get('time')
+        difficulty = request.form.get('difficulty')
+        
+        recipe = Recipe(title=title, ingredients=ingredients, instructions=instructions,
+                        time=time, difficulty=difficulty, user_id=current_user.id)
+        db.session.add(recipe)
+        db.session.commit()
+        flash('Recipe has been created!', 'success')
+        return redirect(url_for('home'))
+    
+    return render_template('create_recipe.html')
+
 
 @app.route('/logout')
 def logout():
