@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Note</title>
+</head>
+<body>
+    <h1>Create a New Note</h1>
+    <form method="POST">
+        <label for="title">Title:</label>
+        <input type="text" name="title" required>
+
+        <label for="content">Content:</label>
+        <textarea name="content" required></textarea>
+
+        <label for="category">Category:</label>
+        <select name="category">
+            <option value="work">Work</option>
+            <option value="idea">Idea</option>
+            <option value="personal">Personal</option>
+        </select>
+
+        <button type="submit">Save Note</button>
+    </form>
+</body>
+</html>
