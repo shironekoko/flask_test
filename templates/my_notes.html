@@ -1,32 +1,21 @@
-<form method="POST">
-    <label for="title">Recipe Title</label>
-    <input type="text" name="title" required>
-    
-    <label for="ingredients">Ingredients</label>
-    <textarea name="ingredients" required></textarea>
-    
-    <label for="instructions">Instructions</label>
-    <textarea name="instructions" required></textarea>
-    
-    <label for="time">Time (minutes)</label>
-    <input type="number" name="time" required>
-    
-    <label for="difficulty">Difficulty</label>
-    <select name="difficulty" required>
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-    </select>
-    
-    <button type="submit">Create Recipe</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Notes</title>
+</head>
+<body>
+    <h1>My Notes</h1>
+    <a href="{{ url_for('create_note') }}">+ Create New Note</a>
 
-{% for recipe in recipes %}
-    <div class="recipe">
-        <h2>{{ recipe.title }}</h2>
-        <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
-        <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
-        <p><strong>Time:</strong> {{ recipe.time }} minutes</p>
-        <p><strong>Difficulty:</strong> {{ recipe.difficulty }}</p>
-    </div>
-{% endfor %}
+    {% for note in notes %}
+        <div class="note">
+            <h2>{{ note.title }}</h2>
+            <p><strong>Category:</strong> {{ note.category }}</p>
+            <p><strong>Content:</strong> {{ note.content }}</p>
+            <p><strong>Created on:</strong> {{ note.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>

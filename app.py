@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'  
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
@@ -86,5 +86,7 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    os.makedirs(os.path.join(app.instance_path, 'instance'), exist_ok=True)
+    if not os.path.exists('site.db'):
+        with app.app_context():
+            db.create_all()
     app.run(debug=True)
