@@ -1,23 +1,99 @@
-<!-- my_notes.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Notes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* จัดตำแหน่งแนวนอน */
+            align-items: flex-start; /* จัดตำแหน่งแนวตั้งขึ้นบน */
+            height: 100vh;
+            flex-direction: column;
+        }
+        .header {
+            text-align: center;
+            margin-top: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .note-container {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            flex-direction: row;
+        }
+        .note {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            width: 200px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        .note:hover {
+            background-color: #eaeaea;
+            transform: scale(1.05);
+        }
+        .note-details {
+            display: none;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        .close-btn {
+            color: red;
+            cursor: pointer;
+            font-weight: bold;
+            float: right;
+            pointer-events: auto;
+        }
+    </style>
+    <script>
+        function toggleNoteDetails(noteId) {
+            var noteDetails = document.getElementById("note-details-" + noteId);
+            var isVisible = noteDetails.style.display === "block";
+            noteDetails.style.display = isVisible ? "none" : "block";
+        }
+
+        function closeNote(noteId, event) {
+            event.stopPropagation();
+            var noteContainer = document.getElementById("note-" + noteId);
+            noteContainer.style.display = "none";
+        }
+    </script>
 </head>
 <body>
-    <h1>Welcome, {{ current_user.username }}!</h1>
-    <h2>Your Notes</h2>
-    {% if notes %}
-        <ul>
+    <div class="header">
+        <h1>Welcome, {{ current_user.username }}!</h1>
+        <h2>Your Notes</h2>
+    </div>
+    <div class="note-container">
+        {% if notes %}
             {% for note in notes %}
-                <li>{{ note.title }} - {{ note.category }} - {{ note.timestamp }}</li>
+                <div class="note" id="note-{{ note.id }}" onclick="toggleNoteDetails({{ note.id }})">
+                    <strong>{{ note.title }}</strong> - {{ note.category }} - {{ note.timestamp }}
+                    <div class="note-details" id="note-details-{{ note.id }}">
+                        <p>{{ note.content }}</p>
+                        <span class="close-btn" onclick="closeNote({{ note.id }}, event)">X</span>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
-    {% else %}
-        <p>You don't have any notes yet.</p>
-    {% endif %}
+        {% else %}
+            <p>You don't have any notes yet.</p>
+        {% endif %}
+    </div>
     <a href="{{ url_for('create_note') }}">Create a New Note</a>
     <a href="{{ url_for('logout') }}">Logout</a>
 </body>
