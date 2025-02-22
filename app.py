@@ -17,6 +17,13 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
 
+class SharedNote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    note_id = db.Column(db.Integer, db.ForeignKey('note.id'), nullable=False)
+    shared_user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    note = db.relationship('Note', backref='shared_notes', lazy=True)
+    shared_user = db.relationship('User', backref='shared_notes', lazy=True)
+
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -186,16 +193,7 @@ def report():
         Note.timestamp <= week_end,
         Note.user_id == current_user.id
     ).all()
-
-    # สร้างข้อมูลกราฟแท่งสำหรับรายงานรายวัน
-    daily_titles = [note.title for note in daily_notes]
-    daily_timestamps = [note.timestamp.strftime("%H:%M") for note in daily_notes]
-
-    # สร้างกราฟแท่ง
-    fig = go.Figure(data=[go.Bar(x=daily_titles, y=daily_timestamps)])
-    graph_html = to_html(fig, full_html=False)  # กราฟในรูปแบบ HTML
-
-    return render_template('report.html', daily_notes=daily_notes, weekly_notes=weekly_notes, graph_html=graph_html)
+    return render_template('report.html', daily_notes=daily_notes, weekly_notes=weekly_notes)
 
 @app.route('/logout')
 def logout():
