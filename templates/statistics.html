@@ -4,82 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Note Statistics</title>
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.18.0/plotly.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f7f6;
             margin: 0;
             padding: 0;
-            text-align: center;
-        }
-        .container {
-            margin-top: 50px;
-            width: 80%;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
         }
         h1 {
+            text-align: center;
+            margin-top: 30px;
             color: #333;
         }
-        table {
-            width: 100%;
+        .statistics-container {
+            width: 80%;
+            max-width: 900px;
             margin-top: 30px;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 12px;
             text-align: center;
         }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .back-link {
-            text-decoration: none;
-            color: white;
-            background-color: #007bff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            display: inline-block;
-            margin-top: 20px;
-        }
-        .back-link:hover {
-            background-color: #0056b3;
+        .stat-item {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #555;
         }
     </style>
 </head>
 <body>
+    <h1>Note Statistics</h1>
+    <div class="statistics-container">
+        <div class="stat-item">
+            <p>Total Notes: {{ total_notes }}</p>
+        </div>
 
-    <div class="container">
-        <h1>Note Statistics</h1>
-        <p>Total number of notes: <strong>{{ total_notes }}</strong></p>
+        <!-- กราฟแท่ง -->
+        <div id="bar-chart"></div>
 
-        <h2>Notes by Category</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Number of Notes</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="stat-item">
+            <h3>Category Breakdown:</h3>
+            <ul>
                 {% for category, count in category_counts %}
-                    <tr>
-                        <td>{{ category }}</td>
-                        <td>{{ count }}</td>
-                    </tr>
+                    <li>{{ category }}: {{ count }} notes</li>
                 {% endfor %}
-            </tbody>
-        </table>
-
-        <a href="{{ url_for('my_notes') }}" class="back-link">Back to My Notes</a>
+            </ul>
+        </div>
     </div>
 
+    <script>
+        var categories = {{ categories|tojson }};
+        var counts = {{ counts|tojson }};
+
+        var data = [{
+            x: categories,
+            y: counts,
+            type: 'bar',
+            marker: {
+                color: 'rgb(50, 130, 184)',
+                opacity: 0.6,
+            },
+        }];
+
+        var layout = {
+            title: 'Number of Notes by Category',
+            xaxis: {
+                title: 'Category',
+            },
+            yaxis: {
+                title: 'Number of Notes',
+            },
+        };
+
+        Plotly.newPlot('bar-chart', data, layout);
+    </script>
 </body>
 </html>
