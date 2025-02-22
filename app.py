@@ -122,7 +122,15 @@ def edit_note(note_id):
 @app.route('/category/<string:category>')
 @login_required
 def notes_by_category(category):
+    # ตรวจสอบว่า category ไม่ว่างเปล่า
+    if not category:
+        flash('Invalid category.', 'danger')
+        return redirect(url_for('my_notes'))
+
     notes = Note.query.filter_by(user_id=current_user.id, category=category).all()
+    if not notes:
+        flash(f'No notes found in the {category} category.', 'info')
+    
     return render_template('category_notes.html', notes=notes, category=category)
 
 @app.route('/logout')
