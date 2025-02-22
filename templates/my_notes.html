@@ -6,8 +6,8 @@
     <title>My Notes</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: lightgreen;
             margin: 0;
             padding: 0;
             display: flex;
@@ -15,13 +15,57 @@
             align-items: flex-start;
             height: 100vh;
             flex-direction: column;
+            position: relative;
         }
         .header {
             text-align: center;
-            margin-top: 20px;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            background-color: #4afbf8;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
         h1, h2 {
             color: #333;
+            margin: 0;
+        }
+        .top-right-links {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .top-right-links a {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .top-right-links a:hover {
+            background-color: #0056b3;
+        }
+        .category-links {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            text-align: left;
+        }
+        .category-links h3 {
+            margin-bottom: 10px;
+        }
+        .category-links a {
+            text-decoration: none;
+            color: #007bff;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        .category-links a:hover {
+            color: #0056b3;
         }
         .note-container {
             margin-top: 20px;
@@ -31,21 +75,21 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 15px;
-            flex-direction: row;
         }
         .note {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
+            background-color: #54f2fd;
+            border: 1px solid #000000;
             padding: 15px;
             width: 220px;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: relative;
         }
         .note:hover {
-            background-color: #eaeaea;
-            transform: scale(1.05);
+            background-color: #54f2fd;
+            transform: scale(1.1);
         }
         .note-details {
             display: none;
@@ -118,6 +162,11 @@
         <h2>Your Notes</h2>
     </div>
     
+    <div class="top-right-links">
+        <a href="{{ url_for('profile') }}">Change Password</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+    
     <div class="category-links">
         <h3>Filter by Category:</h3>
         <a href="{{ url_for('notes_by_category', category='Work') }}">Work</a> |
@@ -138,6 +187,8 @@
                         <form method="POST" action="{{ url_for('delete_note', note_id=note.id) }}" style="display: inline;" onsubmit="return confirmDelete(this);">
                             <button type="submit" class="delete-btn" style="color: red; background: none; border: none; cursor: pointer;">Delete</button>
                         </form>
+                        <!-- ปุ่มแชร์โน้ต -->
+                        <a href="{{ url_for('share_note', note_id=note.id) }}" class="edit-btn">Share</a>
                     </div>
                 </div>
             {% endfor %}
@@ -147,11 +198,9 @@
     </div>
     
     <div class="action-links">
-        <a href="{{ url_for('profile') }}">Change Password</a>
         <a href="{{ url_for('create_note') }}">Create a New Note</a>
         <a href="{{ url_for('statistics') }}">View Note Statistics</a>
         <a href="{{ url_for('report') }}">View Daily/Weekly Report</a>
-        <a href="{{ url_for('logout') }}">Logout</a>
     </div>
 </body>
 </html>

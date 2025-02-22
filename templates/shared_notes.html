@@ -7,20 +7,20 @@
 </head>
 <body>
     <h1>Shared Notes</h1>
-
+    
     {% if notes %}
         <ul>
-            {% for shared_note in notes %}
+            {% for note in notes %}
                 <li>
-                    <strong>{{ shared_note.note.title }}</strong> - Shared by {{ shared_note.note.user.username }} 
-                    on {{ shared_note.note.timestamp }}
+                    <strong>{{ note.title }}</strong> - {{ note.category }} - {{ note.timestamp }}
+                    <p>{{ note.content }}</p> <!-- แสดงข้อความเนื้อหาของโน้ต -->
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>You haven't received any shared notes.</p>
+        <p>No notes have been shared with you yet.</p>
     {% endif %}
-    
+
     <a href="{{ url_for('my_notes') }}">Back to My Notes</a>
 </body>
 </html>

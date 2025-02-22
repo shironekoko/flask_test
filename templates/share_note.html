@@ -9,8 +9,8 @@
     <h1>Share Note: {{ note.title }}</h1>
 
     <form method="POST">
-        <label for="shared_user_id">Select user to share with:</label>
-        <select name="shared_user_id" id="shared_user_id">
+        <label for="shared_user_id">Select User to Share With:</label>
+        <select name="shared_user_id" id="shared_user_id" required>
             {% for user in users %}
                 <option value="{{ user.id }}">{{ user.username }}</option>
             {% endfor %}
