@@ -133,6 +133,24 @@ def edit_note(note_id):
     
     return render_template('edit_note.html', note=note)
 
+@app.route('/delete_note/<int:note_id>', methods=['POST'])
+@login_required
+def delete_note(note_id):
+    # หโน้ตที่ต้องการลบ
+    note = Note.query.get_or_404(note_id)
+
+    # ตรวจสอบว่าโน้ตนี้เป็นของผู้ใช้ที่ล็อกอินอยู่หรือไม่
+    if note.user_id != current_user.id:
+        flash('You do not have permission to delete this note.', 'danger')
+        return redirect(url_for('my_notes'))
+
+    # ลบโน้ตจากฐานข้อมูล
+    db.session.delete(note)
+    db.session.commit()
+
+    flash('Your note has been deleted.', 'success')
+    return redirect(url_for('my_notes'))
+
 @app.route('/category/<string:category>')
 @login_required
 def notes_by_category(category):

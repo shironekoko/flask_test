@@ -126,6 +126,10 @@
                         <p>{{ note.content }}</p>
                         <a href="{{ url_for('edit_note', note_id=note.id) }}" class="edit-btn">Edit</a>
                         <span class="close-btn" onclick="closeNote({{ note.id }}, event)">X</span>
+                        <!-- ปุ่มลบโน้ต -->
+                        <form method="POST" action="{{ url_for('delete_note', note_id=note.id) }}" style="display: inline;">
+                            <button type="submit" class="delete-btn" style="color: red; background: none; border: none; cursor: pointer;">Delete</button>
+                        </form>
                     </div>
                 </div>
             {% endfor %}
@@ -138,6 +142,7 @@
         <a href="{{ url_for('profile') }}">Change Password</a>
         <a href="{{ url_for('create_note') }}">Create a New Note</a>
         <a href="{{ url_for('logout') }}">Logout</a>
-        <!-- เพิ่มลิงก์ไปยังหน้า Note Statistics -->
         <a href="{{ url_for('statistics') }}">View Note Statistics</a>
     </div>
+</body>
+</html>
