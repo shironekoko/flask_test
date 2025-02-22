@@ -103,6 +103,15 @@
             noteContainer.style.display = "none";
         }
     </script>
+    
+    <script>
+        function confirmDelete(form) {
+            var confirmAction = confirm("Are you sure you want to delete this note?");
+            if (confirmAction) {
+                form.submit();  // ส่งแบบฟอร์มเพื่อทำการลบ
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="header">
