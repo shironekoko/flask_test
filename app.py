@@ -104,14 +104,16 @@ def my_notes():
 @app.route('/statistics')
 @login_required
 def statistics():
-    # คำนวณจำนวนโน้ตทั้งหมดของผู้ใช้
     total_notes = Note.query.filter_by(user_id=current_user.id).count()
+    category_counts = db.session.query(Note.category, db.func.count(Note.id)) \
+        .filter_by(user_id=current_user.id) \
+        .group_by(Note.category).all()
+    
+    # เตรียมข้อมูลสำหรับกราฟ
+    categories = [category[0] for category in category_counts]
+    counts = [category[1] for category in category_counts]
 
-    # คำนวณจำนวนโน้ตที่แยกตามประเภท (category)
-    category_counts = db.session.query(Note.category, db.func.count(Note.id)).filter_by(user_id=current_user.id).group_by(Note.category).all()
-
-    # ส่งข้อมูลไปที่หน้า template
-    return render_template('statistics.html', total_notes=total_notes, category_counts=category_counts)
+    return render_template('statistics.html', total_notes=total_notes, category_counts=category_counts, categories=categories, counts=counts)
 
 @app.route('/edit_note/<int:note_id>', methods=['GET', 'POST'])
 @login_required
