@@ -109,6 +109,13 @@
         <h1>Welcome, {{ current_user.username }}!</h1>
         <h2>Your Notes</h2>
     </div>
+    <div class="category-links">
+        <h3>Filter by Category:</h3>
+        <a href="{{ url_for('notes_by_category', category='งาน') }}">งาน</a> |
+        <a href="{{ url_for('notes_by_category', category='ไอเดีย') }}">ไอเดีย</a> |
+        <a href="{{ url_for('notes_by_category', category='ส่วนตัว') }}">ส่วนตัว</a>
+    </div>
+    
     <div class="note-container">
         {% if notes %}
             {% for note in notes %}
