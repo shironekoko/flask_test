@@ -1,11 +1,12 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash  # เพิ่มระบบเข้ารหัสรหัสผ่าน
 import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'  
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
@@ -38,10 +39,16 @@ def register():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        user = User(username=username, password=password)
+        
+        if User.query.filter_by(username=username).first():
+            flash('Username already exists. Please choose another one.', 'danger')
+            return redirect(url_for('register'))
+
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+        user = User(username=username, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created!', 'success')
+        flash('Your account has been created! Please log in.', 'success')
         return redirect(url_for('login'))
     return render_template('register.html')
 
@@ -51,7 +58,7 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         user = User.query.filter_by(username=username).first()
-        if user and user.password == password:
+        if user and check_password_hash(user.password, password):
             login_user(user)
             return redirect(url_for('my_notes'))
         else:
@@ -64,10 +71,11 @@ def profile():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+
         current_user.username = username
-        current_user.password = password
+        current_user.password = generate_password_hash(password, method='pbkdf2:sha256')
         db.session.commit()
-        flash('Password changed successfully!', 'success')
+        flash('Profile updated successfully!', 'success')
         return redirect(url_for('profile'))
     return render_template('profile.html')
 
@@ -110,6 +118,12 @@ def edit_note(note_id):
         return redirect(url_for('my_notes'))
     
     return render_template('edit_note.html', note=note)
+
+@app.route('/category/<string:category>')
+@login_required
+def notes_by_category(category):
+    notes = Note.query.filter_by(user_id=current_user.id, category=category).all()
+    return render_template('category_notes.html', notes=notes, category=category)
 
 @app.route('/logout')
 def logout():
