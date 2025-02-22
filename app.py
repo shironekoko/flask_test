@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash  # เพิ่มระบบเข้ารหัสรหัสผ่าน
+from datetime import datetime, timedelta
 import os
 
 app = Flask(__name__)
@@ -164,6 +165,29 @@ def notes_by_category(category):
         flash(f'No notes found in the {category} category.', 'info')
     
     return render_template('category_notes.html', notes=notes, category=category)
+
+@app.route('/report', methods=['GET'])
+@login_required
+def report():
+    today = datetime.today()
+
+    # สำหรับรายงานรายวัน
+    daily_notes = Note.query.filter(
+        Note.timestamp >= today.replace(hour=0, minute=0, second=0, microsecond=0),
+        Note.timestamp < today.replace(hour=23, minute=59, second=59, microsecond=999999),
+        Note.user_id == current_user.id
+    ).all()
+
+    # สำหรับรายงานรายสัปดาห์
+    week_start = today - timedelta(days=today.weekday())  # เริ่มต้นวันจันทร์ของสัปดาห์นี้
+    week_end = week_start + timedelta(days=6)  # วันอาทิตย์ของสัปดาห์นี้
+    weekly_notes = Note.query.filter(
+        Note.timestamp >= week_start,
+        Note.timestamp <= week_end,
+        Note.user_id == current_user.id
+    ).all()
+
+    return render_template('report.html', daily_notes=daily_notes, weekly_notes=weekly_notes)
 
 @app.route('/logout')
 def logout():
