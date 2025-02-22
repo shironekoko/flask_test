@@ -187,7 +187,15 @@ def report():
         Note.user_id == current_user.id
     ).all()
 
-    return render_template('report.html', daily_notes=daily_notes, weekly_notes=weekly_notes)
+    # สร้างข้อมูลกราฟแท่งสำหรับรายงานรายวัน
+    daily_titles = [note.title for note in daily_notes]
+    daily_timestamps = [note.timestamp.strftime("%H:%M") for note in daily_notes]
+
+    # สร้างกราฟแท่ง
+    fig = go.Figure(data=[go.Bar(x=daily_titles, y=daily_timestamps)])
+    graph_html = to_html(fig, full_html=False)  # กราฟในรูปแบบ HTML
+
+    return render_template('report.html', daily_notes=daily_notes, weekly_notes=weekly_notes, graph_html=graph_html)
 
 @app.route('/logout')
 def logout():
