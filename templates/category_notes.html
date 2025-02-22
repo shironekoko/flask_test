@@ -6,8 +6,8 @@
     <title>Notes - {{ category }}</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: lightgreen;
             margin: 0;
             padding: 0;
             display: flex;
@@ -15,36 +15,45 @@
             align-items: flex-start;
             height: 100vh;
             flex-direction: column;
+            position: relative;
         }
         .header {
             text-align: center;
-            margin-top: 20px;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            background-color: #5ad8f4;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
         h1, h2 {
             color: #333;
+            margin: 0;
         }
         .note-container {
-            margin-top: 20px;
+            margin-top: 80px;
             width: 100%;
             max-width: 900px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 15px;
-            flex-direction: row;
         }
         .note {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
+            background-color: #8cd9ff;
+            border: 1px solid #000000;
             padding: 15px;
             width: 220px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: relative;
         }
         .note:hover {
-            background-color: #eaeaea;
+            background-color: #8cd9ff;
             transform: scale(1.05);
         }
         .note-details {
@@ -95,6 +104,10 @@
             transition: background-color 0.3s;
             display: inline-block;
             margin-top: 20px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
         }
         .back-link:hover {
             background-color: #0056b3;
@@ -129,8 +142,6 @@
         {% endif %}
     </div>
 
-    <div class="header">
-        <a href="{{ url_for('my_notes') }}" class="back-link">Back to All Notes</a>
-    </div>
+    <a href="{{ url_for('my_notes') }}" class="back-link">Back to My Notes</a>
 </body>
 </html>
