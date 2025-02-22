@@ -201,6 +201,13 @@ def share_note(note_id):
     users = User.query.all()  # เลือกผู้ใช้ทั้งหมดสำหรับการแชร์
     return render_template('share_note.html', note=note, users=users)
 
+@app.route('/shared_notes')
+@login_required
+def shared_notes():
+    # ค้นหาทุกโน้ตที่ถูกแชร์ไปยังผู้ใช้ที่ล็อกอิน
+    notes = SharedNote.query.filter_by(shared_user_id=current_user.id).all()
+    return render_template('shared_notes.html', notes=notes)
+
 @app.route('/report', methods=['GET'])
 @login_required
 def report():

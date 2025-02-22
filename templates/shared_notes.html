@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shared Notes</title>
+</head>
+<body>
+    <h1>Shared Notes</h1>
+
+    {% if notes %}
+        <ul>
+            {% for shared_note in notes %}
+                <li>
+                    <strong>{{ shared_note.note.title }}</strong> - Shared by {{ shared_note.note.user.username }} 
+                    on {{ shared_note.note.timestamp }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't received any shared notes.</p>
+    {% endif %}
+    
+    <a href="{{ url_for('my_notes') }}">Back to My Notes</a>
+</body>
+</html>
