@@ -58,6 +58,19 @@ def login():
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html')
 
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        current_user.username = username
+        current_user.password = password
+        db.session.commit()
+        flash('password change successfully!', 'success')
+        return redirect(url_for('profile'))
+    return render_template('profile.html')
+
 @app.route('/create_note', methods=['GET', 'POST'])
 @login_required
 def create_note():

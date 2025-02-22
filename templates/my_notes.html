@@ -59,6 +59,22 @@
             float: right;
             pointer-events: auto;
         }
+        .action-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .action-links a {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .action-links a:hover {
+            background-color: #0056b3;
+        }
     </style>
     <script>
         function toggleNoteDetails(noteId) {
@@ -94,7 +110,12 @@
             <p>You don't have any notes yet.</p>
         {% endif %}
     </div>
-    <a href="{{ url_for('create_note') }}">Create a New Note</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
+    
+    <div class="action-links">
+        <!-- Add a link to the profile page -->
+        <a href="{{ url_for('profile') }}">Change Password</a>
+        <a href="{{ url_for('create_note') }}">Create a New Note</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
 </body>
 </html>
