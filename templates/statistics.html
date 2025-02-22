@@ -33,6 +33,34 @@
             font-size: 18px;
             color: #555;
         }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f1f1f1;
+        }
+        .back-link {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            margin-top: 30px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .back-link:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -47,13 +75,28 @@
 
         <div class="stat-item">
             <h3>Category Breakdown:</h3>
-            <ul>
-                {% for category, count in category_counts %}
-                    <li>{{ category }}: {{ count }} notes</li>
-                {% endfor %}
-            </ul>
+
+            <!-- แสดงข้อมูลเป็นตาราง -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Number of Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category, count in category_counts %}
+                        <tr>
+                            <td>{{ category }}</td>
+                            <td>{{ count }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
+
+    <a href="{{ url_for('my_notes') }}" class="back-link">Back to Main Menu</a>
 
     <script>
         var categories = {{ categories|tojson }};
