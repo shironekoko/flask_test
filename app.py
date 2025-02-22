@@ -173,6 +173,34 @@ def notes_by_category(category):
     
     return render_template('category_notes.html', notes=notes, category=category)
 
+@app.route('/share_note/<int:note_id>', methods=['GET', 'POST'])
+@login_required
+def share_note(note_id):
+    note = Note.query.get_or_404(note_id)
+    
+    # ตรวจสอบว่าโน้ตนี้เป็นของผู้ใช้ที่ล็อกอินอยู่
+    if note.user_id != current_user.id:
+        flash('You do not have permission to share this note.', 'danger')
+        return redirect(url_for('my_notes'))
+    
+    if request.method == 'POST':
+        # รับ ID ของผู้ใช้ที่ต้องการแชร์โน้ต
+        shared_user_id = request.form.get('shared_user_id')
+        
+        # ตรวจสอบว่าผู้ใช้ที่แชร์อยู่ในฐานข้อมูลหรือไม่
+        shared_user = User.query.get(shared_user_id)
+        if shared_user:
+            shared_note = SharedNote(note_id=note.id, shared_user_id=shared_user.id)
+            db.session.add(shared_note)
+            db.session.commit()
+            flash(f'Note shared with {shared_user.username}!', 'success')
+            return redirect(url_for('shared_notes'))
+        else:
+            flash('User not found.', 'danger')
+    
+    users = User.query.all()  # เลือกผู้ใช้ทั้งหมดสำหรับการแชร์
+    return render_template('share_note.html', note=note, users=users)
+
 @app.route('/report', methods=['GET'])
 @login_required
 def report():
