@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Notes</title>
+    <title>Notes - {{ category }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -73,20 +73,17 @@
         .edit-btn:hover {
             background-color: #218838;
         }
-        .action-links {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .action-links a {
+        .back-link {
             text-decoration: none;
             color: white;
             background-color: #007bff;
             padding: 10px 20px;
-            margin: 0 10px;
             border-radius: 5px;
             transition: background-color 0.3s;
+            display: inline-block;
+            margin-top: 20px;
         }
-        .action-links a:hover {
+        .back-link:hover {
             background-color: #0056b3;
         }
     </style>
@@ -96,48 +93,30 @@
             var isVisible = noteDetails.style.display === "block";
             noteDetails.style.display = isVisible ? "none" : "block";
         }
-
-        function closeNote(noteId, event) {
-            event.stopPropagation();
-            var noteContainer = document.getElementById("note-" + noteId);
-            noteContainer.style.display = "none";
-        }
     </script>
 </head>
 <body>
     <div class="header">
-        <h1>Welcome, {{ current_user.username }}!</h1>
-        <h2>Your Notes</h2>
+        <h1>Notes in Category: {{ category }}</h1>
     </div>
-    
-    <div class="category-links">
-        <h3>Filter by Category:</h3>
-        <a href="{{ url_for('notes_by_category', category='งาน') }}">งาน</a> |
-        <a href="{{ url_for('notes_by_category', category='ไอเดีย') }}">ไอเดีย</a> |
-        <a href="{{ url_for('notes_by_category', category='ส่วนตัว') }}">ส่วนตัว</a>
-    </div>
-    
     <div class="note-container">
         {% if notes %}
             {% for note in notes %}
                 <div class="note" id="note-{{ note.id }}" onclick="toggleNoteDetails({{ note.id }})">
-                    <strong>{{ note.title }}</strong> - {{ note.category }} - {{ note.timestamp }}
+                    <strong>{{ note.title }}</strong> - {{ note.timestamp }}
                     <div class="note-details" id="note-details-{{ note.id }}">
                         <p>{{ note.content }}</p>
                         <a href="{{ url_for('edit_note', note_id=note.id) }}" class="edit-btn">Edit</a>
-                        <span class="close-btn" onclick="closeNote({{ note.id }}, event)">X</span>
                     </div>
                 </div>
             {% endfor %}
         {% else %}
-            <p>You don't have any notes yet.</p>
+            <p>No notes found in this category.</p>
         {% endif %}
     </div>
-    
-    <div class="action-links">
-        <a href="{{ url_for('profile') }}">Change Password</a>
-        <a href="{{ url_for('create_note') }}">Create a New Note</a>
-        <a href="{{ url_for('logout') }}">Logout</a>
+
+    <div class="header">
+        <a href="{{ url_for('my_notes') }}" class="back-link">Back to All Notes</a>
     </div>
 </body>
 </html>
