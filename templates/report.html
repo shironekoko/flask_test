@@ -13,6 +13,11 @@
         {% endfor %}
     </ul>
 
+    <div>
+        <h2>Graph of Daily Notes</h2>
+        {{ graph_html|safe }}  <!-- แสดงกราฟแท่ง -->
+    </div>
+
     <h1>Weekly Report</h1>
     <ul>
         {% for note in weekly_notes %}
