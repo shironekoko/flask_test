@@ -19,7 +19,7 @@ class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    category = db.Column(db.String(50))  # ประเภทของโน้ต (งาน, ไอเดีย, บันทึก ฯลฯ)
+    category = db.Column(db.String(50))
     timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('notes', lazy=True))
@@ -67,7 +67,7 @@ def profile():
         current_user.username = username
         current_user.password = password
         db.session.commit()
-        flash('password change successfully!', 'success')
+        flash('Password changed successfully!', 'success')
         return redirect(url_for('profile'))
     return render_template('profile.html')
 
@@ -92,6 +92,24 @@ def create_note():
 def my_notes():
     notes = Note.query.filter_by(user_id=current_user.id).all()
     return render_template('my_notes.html', notes=notes)
+
+@app.route('/edit_note/<int:note_id>', methods=['GET', 'POST'])
+@login_required
+def edit_note(note_id):
+    note = Note.query.get_or_404(note_id)
+    if note.user_id != current_user.id:
+        flash('You do not have permission to edit this note.', 'danger')
+        return redirect(url_for('my_notes'))
+    
+    if request.method == 'POST':
+        note.title = request.form.get('title')
+        note.content = request.form.get('content')
+        note.category = request.form.get('category')
+        db.session.commit()
+        flash('Note has been updated!', 'success')
+        return redirect(url_for('my_notes'))
+    
+    return render_template('edit_note.html', note=note)
 
 @app.route('/logout')
 def logout():
