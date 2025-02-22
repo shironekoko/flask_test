@@ -73,6 +73,19 @@
         .edit-btn:hover {
             background-color: #218838;
         }
+        .delete-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #dc3545;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
         .back-link {
             text-decoration: none;
             color: white;
@@ -107,6 +120,7 @@
                     <div class="note-details" id="note-details-{{ note.id }}">
                         <p>{{ note.content }}</p>
                         <a href="{{ url_for('edit_note', note_id=note.id) }}" class="edit-btn">Edit</a>
+                        <a href="{{ url_for('delete_note', note_id=note.id) }}" class="delete-btn">Delete</a>
                     </div>
                 </div>
             {% endfor %}
