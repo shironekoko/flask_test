@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: lightgreen;
+            background-color: #e0f7fa;
             margin: 0;
             padding: 0;
             display: flex;
@@ -24,7 +24,7 @@
             left: 50%;
             transform: translateX(-50%);
             padding: 10px;
-            background-color: #5ad8f4; /* Change this to the desired background color */
+            background-color: #5ad8f4;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
@@ -60,12 +60,12 @@
         }
         .category-links a {
             text-decoration: none;
-            color: #4c00ff; /* Change this to the desired color */
+            color: #007bff;
             margin: 0 10px;
             transition: color 0.3s;
         }
         .category-links a:hover {
-            color: #e64a19; /* Change this to the desired hover color */
+            color: #0056b3;
         }
         .note-container {
             margin-top: 20px;
@@ -77,8 +77,8 @@
             gap: 15px;
         }
         .note {
-            background-color: #8cd9ff;
-            border: 1px solid #000000;
+            background-color: #fff;
+            border: 1px solid #ddd;
             padding: 15px;
             width: 220px;
             border-radius: 8px;
@@ -88,7 +88,7 @@
             position: relative;
         }
         .note:hover {
-            background-color: #8cd9ff;
+            background-color: #eaeaea;
             transform: scale(1.05);
         }
         .note-details {
@@ -116,6 +116,19 @@
         }
         .edit-btn:hover {
             background-color: #218838;
+        }
+        .delete-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #dc3545;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
         }
         .action-links {
             text-align: center;
@@ -185,7 +198,7 @@
                         <span class="close-btn" onclick="closeNote({{ note.id }}, event)">X</span>
                         <!-- ปุ่มลบโน้ต -->
                         <form method="POST" action="{{ url_for('delete_note', note_id=note.id) }}" style="display: inline;" onsubmit="return confirmDelete(this);">
-                            <button type="submit" class="delete-btn" style="color: red; background: none; border: none; cursor: pointer;">Delete</button>
+                            <button type="submit" class="delete-btn">Delete</button>
                         </form>
                         <!-- ปุ่มแชร์โน้ต -->
                         <a href="{{ url_for('share_note', note_id=note.id) }}" class="edit-btn">Share</a>

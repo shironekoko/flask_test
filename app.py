@@ -73,7 +73,7 @@ def login():
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html')
 
-@app.route('/profile', methods=['GET', 'POST'])
+@app.route('/changepassword', methods=['GET', 'POST'])
 @login_required
 def profile():
     if request.method == 'POST':
@@ -84,8 +84,8 @@ def profile():
         current_user.password = generate_password_hash(password, method='pbkdf2:sha256')
         db.session.commit()
         flash('Profile updated successfully!', 'success')
-        return redirect(url_for('profile'))
-    return render_template('profile.html')
+        return redirect(url_for('changepassword'))
+    return render_template('changepassword.html')
 
 @app.route('/create_note', methods=['GET', 'POST'])
 @login_required

@@ -4,20 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Share Note</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .back-link {
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            color: #007bff;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Share Note: {{ note.title }}</h1>
+    <div class="container">
+        <h1>Share Note: {{ note.title }}</h1>
 
-    <form method="POST">
-        <label for="shared_user_id">Select User to Share With:</label>
-        <select name="shared_user_id" id="shared_user_id" required>
-            {% for user in users %}
-                <option value="{{ user.id }}">{{ user.username }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Share</button>
-    </form>
+        <form method="POST">
+            <label for="shared_user_id">Select User to Share With:</label>
+            <select name="shared_user_id" id="shared_user_id" required>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Share</button>
+        </form>
 
-    <a href="{{ url_for('my_notes') }}">Back to My Notes</a>
+        <a href="{{ url_for('my_notes') }}" class="back-link">Back to My Notes</a>
+    </div>
 </body>
 </html>
