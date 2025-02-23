@@ -4,21 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Note</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 60%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: none;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 150px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .back-link {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            display: inline-block;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .back-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Edit Note</h1>
-    <form method="POST">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" value="{{ note.title }}" required><br><br>
+    <div class="container">
+        <h1>Edit Note</h1>
+        <form method="POST">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="{{ note.title }}" required>
 
-        <label for="content">Content:</label><br>
-        <textarea id="content" name="content" rows="5" required>{{ note.content }}</textarea><br><br>
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" rows="5" required>{{ note.content }}</textarea>
 
-        <label for="category">Category:</label>
-        <input type="text" id="category" name="category" value="{{ note.category }}"><br><br>
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category" value="{{ note.category }}">
 
-        <button type="submit">Update Note</button>
-    </form>
-    <a href="{{ url_for('my_notes') }}">Back to Notes</a>
+            <button type="submit">Update Note</button>
+        </form>
+        <a href="{{ url_for('my_notes') }}" class="back-link">Back to Notes</a>
+    </div>
 </body>
 </html>

@@ -6,14 +6,18 @@
     <title>Create Note</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0f7fa;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
             width: 60%;
-            margin: 0 auto;
+            max-width: 600px;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -23,6 +27,7 @@
         h1 {
             text-align: center;
             color: #333;
+            margin-bottom: 20px;
         }
         label {
             display: block;
@@ -38,12 +43,13 @@
             border-radius: 4px;
             font-size: 16px;
             resize: none;
+            box-sizing: border-box;
         }
         textarea {
             height: 150px;
         }
         button {
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -51,9 +57,10 @@
             cursor: pointer;
             font-size: 16px;
             width: 100%;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #0056b3;
         }
         .note-category {
             margin-bottom: 20px;
