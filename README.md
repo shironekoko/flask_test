@@ -5,7 +5,7 @@
 
 1. **โคลน repository:**
     ```sh
-    git clone https://github.com/yourusername/flask_test.git
+    git clone https://github.com/shironekoko/flask_test.git
     cd flask_test
     ```
 
